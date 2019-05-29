@@ -157,7 +157,7 @@
       this.getCourse();
     }
   }
-</script>  //
+</script>
 <style scoped>
 
 </style>
