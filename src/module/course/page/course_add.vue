@@ -49,7 +49,7 @@
         gradeList:[],
         props: {
           value: 'id',
-          label:'label',
+          label:'name',
           children:'children'
         },
         categoryList: [],
@@ -82,54 +82,47 @@
       }
     },
     methods: {
+        //新增课程提交
       save () {
-          this.$refs.courseForm.validate((valid) => {
-            if (valid) {
-              this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                //当前选择的分类
-                let mt = this.categoryActive[0];
-                let st = this.categoryActive[1];
-                this.courseForm.mt = mt;
-                this.courseForm.st = st;
-                //请求服务接口
-                courseApi.addCourseBase(this.courseForm).then((res) => {
-                  if(res.success){
-                    this.$message.success('提交成功');
-                    //跳转到课程图片
-                    //this.$router.push({ path: '/course/add/picture/1/'+this.courseid})
-                  }else{
-                    if(res.message){
-                      this.$message.error(res.message);
-                    }else{
-                      this.$message.error('提交失败');
-                    }
+          //处理课程分类
+          // 选择课程分类存储到categoryActive
+           this.courseForm.mt=  this.categoryActive[0]//大分类
+           this.courseForm.st=  this.categoryActive[1]//小分类
+          courseApi.addCourseBase(this.courseForm).then(res=>{
+              if(res.success){
+                  this.$message.success("提交成功")
+                //跳转到我的课程
+                this.$router.push({ path: '/course/list'})
+              }else{
+                this.$message.error(res.message)
+              }
 
-                  }
-                });
-
-              });
-            }
-          });
-
-
+          })
       }
     },
     created(){
 
     },
     mounted(){
-      //查询数据字典字典
-      systemApi.sys_getDictionary('201').then((res) => {
-//        console.log(res);
-        this.studymodelList = res.dvalue;
-      });
-      systemApi.sys_getDictionary('200').then((res) => {
+      // 查询课程分类
+      courseApi.category_findlist().then(res=>{
+          this.categoryList = res.children;
+          console.log(this.categoryList)
+
+      })
+
+      //查询数据字典
+      //查询课程等级
+      systemApi.sys_getDictionary("200").then(res=>{
+
         this.gradeList = res.dvalue;
-      });
-      //取课程分类
-      courseApi.category_findlist({}).then((res) => {
-        this.categoryList = res.children;
-      });
+      })
+      //查询学习模式
+      systemApi.sys_getDictionary("201").then(res=>{
+
+        this.studymodelList = res.dvalue;
+      })
+
     }
   }
 </script>
@@ -137,3 +130,4 @@
 
 
 </style>
+

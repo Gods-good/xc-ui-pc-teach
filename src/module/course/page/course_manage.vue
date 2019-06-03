@@ -52,7 +52,7 @@
       this.courseid = this.$route.params.courseid
 
       console.log("courseid=" + this.courseid)
-      //跳转到页面列表
+      //跳转到课程基本信息
       this.$router.push({ path: '/course/manage/baseinfo/'+this.courseid})
 
     }

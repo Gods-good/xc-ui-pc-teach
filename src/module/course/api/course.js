@@ -10,3 +10,20 @@ export const findCourseList = (page,size,params) => {
   let queries = querystring.stringify(params)
   return http.requestQuickGet(apiUrl+"/course/coursebase/list/"+page+"/"+size+"?"+queries)
 }
+
+//查询课程分类
+export const category_findlist= () => {
+  return http.requestQuickGet(apiUrl+'/category/list')
+}
+/*添加课程基础信息*/
+export const addCourseBase = params => {
+  return http.requestPost(apiUrl+'/course/coursebase/add',params)
+}
+/*查询课程计划*/
+export const findTeachplanList = courseid => {
+  return http.requestQuickGet(apiUrl+'/course/teachplan/list/'+courseid)
+}
+/*添加课程计划*/
+export const addTeachplan = teachplah => {
+  return http.requestPost(apiUrl+'/course/teachplan/add',teachplah)
+}
